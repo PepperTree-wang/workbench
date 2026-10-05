@@ -1,0 +1,17 @@
+# /etc/systemd/system/personal-site.service
+# 注意：Ubuntu/Debian 用 www-data；CentOS/Alibaba Cloud Linux/OpenCloudOS 请改为 nginx 用户
+[Unit]
+Description=Personal site API (FastAPI)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/personal-site/backend
+EnvironmentFile=/opt/personal-site/backend/.env
+ExecStart=/opt/personal-site/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --proxy-headers
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
